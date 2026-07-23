@@ -3,110 +3,138 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Nearest-neighbor prediction of RNA/RNA, RNA/DNA and 2′-modified RNA/RNA duplex thermodynamic parameters under non-crowding and cell-like conditions.">
   <title>2′-Modified RNA Duplex Stability Calculator</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <main>
-  <header class="hero">
-    <div class="eyebrow">WEB-BASED NEAREST-NEIGHBOUR PREDICTION TOOL</div>
-    <h1>2′-Modified RNA Duplex Stability Calculator</h1>
-    <p class="intro">Predict sequence-dependent Δ<i>H</i>°, Δ<i>S</i>° and Δ<i>G</i>° values for RNA/RNA, RNA/DNA and four 2′-modified RNA/RNA duplexes under non-crowding and cell-like conditions.</p>
-
-    <div class="summary-lines">
-      <p><b>Duplexes:</b> RNA/RNA · RNA/DNA · 2′-OMe RNA/RNA · 2′-F RNA/RNA · 2′-MOE RNA/RNA · LNA RNA/RNA</p>
-      <p><b>Conditions:</b> non-crowding · cell-like</p>
-      <p><b>Outputs:</b> Δ<i>H</i>° · Δ<i>S</i>° · Δ<i>G</i>°<sub>37</sub> · NN breakdown · CSV</p>
-    </div>
-  </header>
-
-  <section class="howto">
-    <h2>How to use</h2>
-    <div class="steps">
-      <div class="step">
-        <div class="stepno">1</div>
-        <div><h3>Enter sequences</h3><p>Input Strand A and auto-fill Strand B.</p></div>
-      </div>
-      <div class="step">
-        <div class="stepno">2</div>
-        <div><h3>Select mode</h3><p>Choose the duplex type and solution condition.</p></div>
-      </div>
-      <div class="step">
-        <div class="stepno">3</div>
-        <div><h3>Calculate</h3><p>Run the prediction and review the outputs.</p></div>
+  <section class="hero-shell">
+    <div class="hero-copy">
+      <div class="eyebrow" data-i18n="eyebrow">WEB-BASED NEAREST-NEIGHBOR PREDICTION TOOL</div>
+      <h1 data-i18n="title">2′-Modified RNA Duplex Stability Calculator</h1>
+      <p class="intro" data-i18n-html="intro">Predict sequence-dependent Δ<i>H</i>°, Δ<i>S</i>°, and Δ<i>G</i>°<sub>37</sub> values for RNA/RNA, RNA/DNA, and four 2′-modified RNA/RNA duplexes under non-crowding and cell-like conditions.</p>
+      <div class="summary-lines">
+        <p><b data-i18n="duplexesLabel">Duplexes:</b> <span data-i18n="duplexesText">RNA/RNA · RNA/DNA · 2′-OMe RNA/RNA · 2′-F RNA/RNA · 2′-MOE RNA/RNA · LNA RNA/RNA</span></p>
+        <p><b data-i18n="conditionsLabel">Conditions:</b> <span data-i18n="conditionsText">non-crowding · cell-like</span></p>
+        <p><b data-i18n="outputsLabel">Outputs:</b> <span data-i18n-html="outputsText">Δ<i>H</i>° · Δ<i>S</i>° · Δ<i>G</i>°<sub>37</sub> · NN breakdown · CSV</span></p>
       </div>
     </div>
+
+    <aside class="howto-panel">
+      <div class="language-box">
+        <label for="language" data-i18n="language">Language</label>
+        <select id="language" aria-label="Language">
+          <option value="en">English</option>
+          <option value="zh">中文</option>
+          <option value="ja">日本語</option>
+          <option value="ko">한국어</option>
+        </select>
+      </div>
+      <h2 data-i18n="howToUse">How to use</h2>
+      <div class="steps">
+        <div class="step"><div class="stepno">1</div><div><h3 data-i18n="step1Title">Enter sequences</h3><p data-i18n="step1Text">Input Strand A and auto-fill Strand B.</p></div></div>
+        <div class="step"><div class="stepno">2</div><div><h3 data-i18n="step2Title">Select mode</h3><p data-i18n="step2Text">Choose the duplex type and solution condition.</p></div></div>
+        <div class="step"><div class="stepno">3</div><div><h3 data-i18n="step3Title">Calculate</h3><p data-i18n="step3Text">Run the prediction and review the total values and NN breakdown.</p></div></div>
+      </div>
+    </aside>
   </section>
 
-  <section class="card grid">
-    <label>Duplex type
-      <select id="mode">
-        <option value="unmodified">RNA/RNA</option>
-        <option value="RNA_DNA">RNA/DNA</option>
-        <option value="OMe">2′-OMe RNA/RNA</option>
-        <option value="F">2′-F RNA/RNA</option>
-        <option value="MOE">2′-MOE RNA/RNA</option>
-        <option value="LNA">LNA RNA/RNA</option>
-      </select>
-    </label>
-    <label>Condition
-      <select id="condition">
-        <option value="dilute">Non-crowding</option>
-        <option value="PEG">Cell-like (40 wt% PEG 200)</option>
-      </select>
-    </label>
-  </section>
-
-  <section class="card">
-    <h2>Sequence input</h2>
-    <p class="note">Strand 1 is unmodified RNA written 5′→3′. Strand 2 is written 3′→5′ and uses the chemistry selected above. Spaces, hyphens and terminal labels are ignored.</p>
-
-    <label>Strand 1: RNA (5′→3′)
-      <textarea id="a" spellcheck="false">GCAUCG</textarea>
-    </label>
-
-    <label class="check auto-check">
-      <input type="checkbox" id="autofill" checked>
-      Automatically fill the Watson–Crick complementary strand
-    </label>
-
-    <label>Strand 2: complementary strand (3′→5′)
-      <textarea id="b" spellcheck="false">CGUAGC</textarea>
-    </label>
-
-    <p class="notation" id="notation"></p>
-
-    <div class="buttons">
-      <button type="button" id="auto">Generate complement</button>
-      <button type="button" id="calc" class="primary">Calculate</button>
+  <section class="workspace">
+    <h2 class="section-title" data-i18n="sequenceInput">Sequence Input</h2>
+    <div class="instruction-strip">
+      <span class="mini-step">1</span>
+      <p><b data-i18n="sequenceInputBold">Sequence input.</b> <span data-i18n="sequenceInputHelp">Enter Strand A and Strand B below. Strand B can be generated automatically.</span><br><b data-i18n="acceptedNotationLabel">Accepted notation:</b> <span data-i18n="acceptedNotation">RNA, A/C/G/U; DNA, dA/dC/dG/dT; 2′-OMe, Ao/Co/Go/Uo; 2′-F, Af/Cf/Gf/Uf; 2′-MOE, Am/Cm/Gm/Um; LNA, Al/Cl/Gl/Ul.</span></p>
     </div>
 
-    <p class="note">The self-complementary correction is applied automatically only when Strand 1 is identical to its own reverse-complement sequence, for example 5′-AACCGGUU-3′ for RNA or 5′-AACCGGTT-3′ for DNA.</p>
+    <div class="sequence-grid">
+      <label><span data-i18n="strand1Label">Strand A, 5′→3′ unmodified RNA strand</span>
+        <textarea id="a" spellcheck="false">CUACGCUU</textarea>
+      </label>
+      <label><span data-i18n="strand2Label">Strand B, 3′→5′ complementary strand</span>
+        <textarea id="b" spellcheck="false">GmAmUmGmCmGmAmAm</textarea>
+      </label>
+    </div>
+
+    <div class="input-actions">
+      <button type="button" id="auto" data-i18n="autoFill">Auto-fill Strand B</button>
+      <label class="check"><input type="checkbox" id="autofill" checked> <span data-i18n="autoUpdate">Update Strand B while Strand A or the mode changes</span></label>
+    </div>
+
+    <div class="instruction-strip compact">
+      <span class="mini-step">2</span>
+      <p><b data-i18n="modeSelectionBold">Mode selection.</b> <span data-i18n="modeSelectionHelp">Choose the duplex type and solution condition. The selected chemistry determines the required notation for Strand B.</span></p>
+    </div>
+
+    <div class="mode-grid">
+      <label class="mode-label"><span data-i18n="calculationMode">Calculation mode</span>
+        <select id="mode">
+          <option value="unmodified" data-i18n="modeRNA">RNA/RNA</option>
+          <option value="RNA_DNA" data-i18n="modeDNARNA">RNA/DNA</option>
+          <option value="OMe" data-i18n="modeOMe">2′-OMe RNA/RNA</option>
+          <option value="F" data-i18n="modeF">2′-F RNA/RNA</option>
+          <option value="MOE" selected data-i18n="modeMOE">2′-MOE RNA/RNA</option>
+          <option value="LNA" data-i18n="modeLNA">LNA RNA/RNA</option>
+        </select>
+      </label>
+
+      <label class="mode-label"><span data-i18n="condition">Condition</span>
+        <select id="condition">
+          <option value="dilute" data-i18n="nonCrowding">Non-crowding</option>
+          <option value="PEG" selected data-i18n="cellLike">Cell-like (40 wt% PEG 200)</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="mode-notes">
+      <p class="notation" id="notation"></p>
+      <p class="self-note" data-i18n="selfNote">The self-complementary correction is applied automatically only when a strand is identical to its own reverse-complement sequence.</p>
+    </div>
+
+    <div class="execution-row">
+      <div class="buttons">
+        <button type="button" id="calc" class="primary" data-i18n="calculate">Calculate</button>
+        <button type="button" id="csv" data-i18n="downloadCsv">Download CSV</button>
+      </div>
+      <div class="instruction-strip compact execution-help">
+        <span class="mini-step">3</span>
+        <p><b data-i18n="executionBold">Execution and output.</b> <span data-i18n-html="executionHelp">Click Calculate to obtain Δ<i>H</i>°, Δ<i>S</i>°, Δ<i>G</i>°<sub>37</sub>, and the detailed NN contribution breakdown.</span></p>
+      </div>
+    </div>
     <div id="msg" role="status" aria-live="polite"></div>
   </section>
 
-  <section class="card" id="results" hidden>
-    <h2>Predicted thermodynamic parameters</h2>
+  <section id="results" class="results-section">
+    <h2 class="section-title"><span data-i18n="predictedParameters">Predicted Thermodynamic Parameters</span> <small data-i18n="outputSubtitle">Total values and NN contribution details</small></h2>
     <div class="results">
-      <div><b id="dh">—</b><span>Δ<i>H</i>° (kcal mol⁻¹)</span></div>
-      <div><b id="ds">—</b><span>Δ<i>S</i>° (cal mol⁻¹ K⁻¹)</span></div>
-      <div><b id="dg">—</b><span>Δ<i>G</i>°<sub>37</sub> (kcal mol⁻¹)</span></div>
+      <div><span class="metric-label">Δ<i>H</i>° <span data-i18n="total">total</span> (kcal mol<sup>−1</sup>)</span><b id="dh">—</b></div>
+      <div><span class="metric-label">Δ<i>S</i>° <span data-i18n="total">total</span> (cal mol<sup>−1</sup> K<sup>−1</sup>)</span><b id="ds">—</b></div>
+      <div><span class="metric-label">Δ<i>G</i>°<sub>37</sub> <span data-i18n="total">total</span> (kcal mol<sup>−1</sup>)</span><b id="dg">—</b></div>
     </div>
-    <h3>Nearest-neighbour contributions</h3>
+    <div class="result-meta" id="resultMeta"></div>
+    <h3 data-i18n="nnContributions">Nearest-neighbor contributions</h3>
     <div class="tablewrap">
       <table>
-        <thead><tr><th>Step/correction</th><th>Parameter</th><th>Δ<i>H</i>°</th><th>Δ<i>S</i>°</th><th>Δ<i>G</i>°<sub>37</sub></th></tr></thead>
+        <thead><tr><th data-i18n="stepCorrection">Step/correction</th><th data-i18n="parameter">Parameter</th><th>Δ<i>H</i>°</th><th>Δ<i>S</i>°</th><th>Δ<i>G</i>°<sub>37</sub></th></tr></thead>
         <tbody id="rows"></tbody>
       </table>
     </div>
-    <button type="button" id="csv">Download CSV</button>
   </section>
 
-  <section class="card">
-    <h2>Accepted notation</h2>
-    <p>RNA: A, C, G, U · DNA: dA, dC, dG, dT · 2′-OMe: Ao, Co, Go, Uo · 2′-F: Af, Cf, Gf, Uf · 2′-MOE: Am, Cm, Gm, Um · LNA: Al, Cl, Gl, Ul.</p>
-    <p>Current parameter version: <b>17 July 2026</b>.</p>
+  <section class="references-section" aria-labelledby="referencesTitle">
+    <h2 class="section-title" id="referencesTitle" data-i18n="references">References</h2>
+    <ol class="reference-list">
+      <li>Sugimoto, N.; Kierzek, R.; Turner, D. H. Sequence dependence for the energetics of dangling ends and terminal base pairs in ribonucleic acid. <i>Biochemistry</i> <b>1987</b>, <i>26</i>.</li>
+      <li>Banerjee, D.; Tateishi-Karimata, H.; Ohyama, T.; Ghosh, S.; Endoh, T.; Takahashi, S.; Sugimoto, N. Improved nearest-neighbor parameters for the stability of RNA/DNA hybrids under a physiological condition. <i>Nucleic Acids Res.</i> <b>2020</b>, <i>48</i>, 12042.</li>
+      <li>Ghosh, S.; Takahashi, S.; Banerjee, D.; Ohyama, T.; Endoh, T.; Tateishi-Karimata, H.; Sugimoto, N. Nearest-neighbor parameters for predicting the stability of RNA duplexes under molecular crowding conditions. <i>Nucleic Acids Res.</i> <b>2023</b>, <i>51</i>, 4101–4111.</li>
+      <li>Banerjee, D.; Tateishi-Karimata, H.; Toplishek, M.; Ohyama, T.; Ghosh, S.; Takahashi, S.; Trajkovski, M.; Plavec, J.; Sugimoto, N. Molecular crowding regulates the structure and stability of nucleic acid duplexes. <i>J. Am. Chem. Soc.</i> <b>2023</b>, <i>145</i>, 23503.</li>
+    </ol>
+    <p class="reference-note" data-i18n="referenceNote">The 2′-OMe, 2′-F, 2′-MOE, and LNA parameter sets used in the current website version are the parameter set dated 17 July 2026 and will be updated when the revised values become available.</p>
   </section>
+
+  <footer>
+    <p><span data-i18n="parameterVersion">Current parameter version:</span> <b>17 July 2026</b>.</p>
+  </footer>
 </main>
 <script src="parameters.js"></script>
 <script src="calculator.js"></script>

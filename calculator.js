@@ -192,10 +192,10 @@
         `<tr><td>${escapeHtml(row.label)}</td><td>${escapeHtml(row.parameter)}</td><td>${row.dH.toFixed(2)}</td><td>${row.dS.toFixed(2)}</td><td>${row.dG.toFixed(2)}</td></tr>`
       ).join('');
       $('results').hidden = false;
+      $('resultMeta').textContent = `${setName} · Strand A: ${$('a').value} · Strand B: ${$('b').value}${selfComplementary ? ' · self-complementary correction applied' : ''}`;
       setMessage(`Calculation completed using ${setName}.${selfComplementary ? ' Self-complementary correction was applied automatically.' : ''}`, true);
       lastRows = rows;
     } catch (error) {
-      $('results').hidden = true;
       setMessage(error.message, false);
     }
   }
@@ -218,48 +218,61 @@
     URL.revokeObjectURL(link.href);
   }
 
+  const translations = {
+    en: {
+      eyebrow:'WEB-BASED NEAREST-NEIGHBOR PREDICTION TOOL', title:'2′-Modified RNA Duplex Stability Calculator',
+      intro:'Predict sequence-dependent Δ<i>H</i>°, Δ<i>S</i>°, and Δ<i>G</i>°<sub>37</sub> values for RNA/RNA, RNA/DNA, and four 2′-modified RNA/RNA duplexes under non-crowding and cell-like conditions.',
+      duplexesLabel:'Duplexes:',duplexesText:'RNA/RNA · RNA/DNA · 2′-OMe RNA/RNA · 2′-F RNA/RNA · 2′-MOE RNA/RNA · LNA RNA/RNA',conditionsLabel:'Conditions:',conditionsText:'non-crowding · cell-like',outputsLabel:'Outputs:',outputsText:'Δ<i>H</i>° · Δ<i>S</i>° · Δ<i>G</i>°<sub>37</sub> · NN breakdown · CSV',language:'Language',howToUse:'How to use',step1Title:'Enter sequences',step1Text:'Input Strand A and auto-fill Strand B.',step2Title:'Select mode',step2Text:'Choose the duplex type and solution condition.',step3Title:'Calculate',step3Text:'Run the prediction and review the total values and NN breakdown.',sequenceInput:'Sequence Input',sequenceInputBold:'Sequence input.',sequenceInputHelp:'Enter Strand A and Strand B below. Strand B can be generated automatically.',acceptedNotationLabel:'Accepted notation:',acceptedNotation:'RNA, A/C/G/U; DNA, dA/dC/dG/dT; 2′-OMe, Ao/Co/Go/Uo; 2′-F, Af/Cf/Gf/Uf; 2′-MOE, Am/Cm/Gm/Um; LNA, Al/Cl/Gl/Ul.',strand1Label:'Strand A, 5′→3′ unmodified RNA strand',strand2Label:'Strand B, 3′→5′ complementary strand',autoFill:'Auto-fill Strand B',autoUpdate:'Update Strand B while Strand A or the mode changes',calculationMode:'Duplex type',condition:'Condition',modeRNA:'RNA/RNA',modeDNARNA:'RNA/DNA',modeOMe:'2′-OMe RNA/RNA',modeF:'2′-F RNA/RNA',modeMOE:'2′-MOE RNA/RNA',modeLNA:'LNA RNA/RNA',nonCrowding:'Non-crowding',cellLike:'Cell-like (40 wt% PEG 200)',modeSelectionBold:'Mode selection.',modeSelectionHelp:'Choose the duplex type and solution condition. The selected chemistry determines the required notation for Strand B.',selfNote:'The self-complementary correction is applied automatically only when a strand is identical to its own reverse-complement sequence.',calculate:'Calculate',downloadCsv:'Download CSV',executionBold:'Execution and output.',executionHelp:'Click Calculate to obtain Δ<i>H</i>°, Δ<i>S</i>°, Δ<i>G</i>°<sub>37</sub>, and the detailed NN contribution breakdown.',predictedParameters:'Predicted Thermodynamic Parameters',outputSubtitle:'Total values and NN contribution details',total:'total',nnContributions:'Nearest-neighbor contributions',stepCorrection:'Step/correction',parameter:'Parameter',parameterVersion:'Current parameter version:',references:'References',referenceNote:'The 2′-OMe, 2′-F, 2′-MOE, and LNA parameter sets used in the current website version are the parameter set dated 17 July 2026 and will be updated when the revised values become available.'
+    },
+    zh: {
+      eyebrow:'基于网页的最近邻参数预测工具',title:'2′-修饰 RNA 双链稳定性计算器',intro:'预测 RNA/RNA、RNA/DNA 及四种 2′-修饰 RNA/RNA 双链在非拥挤和细胞样条件下的序列依赖性 Δ<i>H</i>°、Δ<i>S</i>° 和 Δ<i>G</i>°<sub>37</sub>。',duplexesLabel:'双链类型：',duplexesText:'RNA/RNA · RNA/DNA · 2′-OMe RNA/RNA · 2′-F RNA/RNA · 2′-MOE RNA/RNA · LNA RNA/RNA',conditionsLabel:'条件：',conditionsText:'非拥挤 · 细胞样',outputsLabel:'输出：',outputsText:'Δ<i>H</i>° · Δ<i>S</i>° · Δ<i>G</i>°<sub>37</sub> · NN 参数分解 · CSV',language:'语言',howToUse:'使用方法',step1Title:'输入序列',step1Text:'输入链 A，并自动生成链 B。',step2Title:'选择模式',step2Text:'选择双链类型和溶液条件。',step3Title:'计算',step3Text:'运行预测并查看总参数和 NN 分解结果。',sequenceInput:'序列输入',sequenceInputBold:'序列输入。',sequenceInputHelp:'在下方输入链 A 和链 B；链 B 可自动生成。',acceptedNotationLabel:'可用符号：',acceptedNotation:'RNA：A/C/G/U；DNA：dA/dC/dG/dT；2′-OMe：Ao/Co/Go/Uo；2′-F：Af/Cf/Gf/Uf；2′-MOE：Am/Cm/Gm/Um；LNA：Al/Cl/Gl/Ul。',strand1Label:'链 A：5′→3′ 未修饰 RNA 链',strand2Label:'链 B：3′→5′ 互补链',autoFill:'自动生成链 B',autoUpdate:'链 A 或模式变化时自动更新链 B',calculationMode:'双链类型',condition:'条件',modeRNA:'RNA/RNA',modeDNARNA:'RNA/DNA',modeOMe:'2′-OMe RNA/RNA',modeF:'2′-F RNA/RNA',modeMOE:'2′-MOE RNA/RNA',modeLNA:'LNA RNA/RNA',nonCrowding:'非拥挤',cellLike:'细胞样（40 wt% PEG 200）',modeSelectionBold:'模式选择。',modeSelectionHelp:'选择双链类型和溶液条件；所选化学类型决定链 B 的输入符号。',selfNote:'仅当单链与其反向互补序列完全相同时，程序才自动加入自互补修正。',calculate:'计算',downloadCsv:'下载 CSV',executionBold:'执行与输出。',executionHelp:'点击“计算”获得 Δ<i>H</i>°、Δ<i>S</i>°、Δ<i>G</i>°<sub>37</sub> 以及详细的 NN 参数贡献。',predictedParameters:'预测热力学参数',outputSubtitle:'总参数及 NN 贡献明细',total:'总值',nnContributions:'最近邻参数贡献',stepCorrection:'步骤/修正项',parameter:'参数',parameterVersion:'当前参数版本：',references:'参考文献',referenceNote:'当前网站使用的 2′-OMe、2′-F、2′-MOE 和 LNA 参数为 2026 年 7 月 17 日版本；修订参数确定后将进一步更新。'
+    },
+    ja: {
+      eyebrow:'ウェブベース最近接塩基対予測ツール',title:'2′修飾 RNA 二重鎖安定性計算ツール',intro:'非クラウディングおよび細胞様条件における RNA/RNA、RNA/DNA、ならびに4種類の2′修飾 RNA/RNA 二重鎖の配列依存的な Δ<i>H</i>°、Δ<i>S</i>°、Δ<i>G</i>°<sub>37</sub> を予測します。',duplexesLabel:'二重鎖：',duplexesText:'RNA/RNA · RNA/DNA · 2′-OMe RNA/RNA · 2′-F RNA/RNA · 2′-MOE RNA/RNA · LNA RNA/RNA',conditionsLabel:'条件：',conditionsText:'非クラウディング · 細胞様',outputsLabel:'出力：',outputsText:'Δ<i>H</i>° · Δ<i>S</i>° · Δ<i>G</i>°<sub>37</sub> · NN 内訳 · CSV',language:'言語',howToUse:'使用方法',step1Title:'配列を入力',step1Text:'鎖 A を入力し、鎖 B を自動生成します。',step2Title:'モードを選択',step2Text:'二重鎖タイプと溶液条件を選択します。',step3Title:'計算',step3Text:'予測を実行し、合計値と NN 内訳を確認します。',sequenceInput:'配列入力',sequenceInputBold:'配列入力。',sequenceInputHelp:'鎖 A と鎖 B を入力してください。鎖 B は自動生成できます。',acceptedNotationLabel:'使用可能な表記：',acceptedNotation:'RNA：A/C/G/U；DNA：dA/dC/dG/dT；2′-OMe：Ao/Co/Go/Uo；2′-F：Af/Cf/Gf/Uf；2′-MOE：Am/Cm/Gm/Um；LNA：Al/Cl/Gl/Ul。',strand1Label:'鎖 A：5′→3′ 未修飾 RNA 鎖',strand2Label:'鎖 B：3′→5′ 相補鎖',autoFill:'鎖 B を自動入力',autoUpdate:'鎖 A またはモード変更時に鎖 B を更新',calculationMode:'二重鎖タイプ',condition:'条件',modeRNA:'RNA/RNA',modeDNARNA:'RNA/DNA',modeOMe:'2′-OMe RNA/RNA',modeF:'2′-F RNA/RNA',modeMOE:'2′-MOE RNA/RNA',modeLNA:'LNA RNA/RNA',nonCrowding:'非クラウディング',cellLike:'細胞様（40 wt% PEG 200）',modeSelectionBold:'モード選択。',modeSelectionHelp:'二重鎖タイプと溶液条件を選択してください。選択した化学種により鎖 B の表記が決まります。',selfNote:'自己相補性補正は、一本鎖が自身の逆相補配列と完全に一致する場合にのみ自動適用されます。',calculate:'計算',downloadCsv:'CSVをダウンロード',executionBold:'計算と出力。',executionHelp:'「計算」をクリックすると、Δ<i>H</i>°、Δ<i>S</i>°、Δ<i>G</i>°<sub>37</sub> と NN 寄与の詳細が表示されます。',predictedParameters:'予測熱力学パラメータ',outputSubtitle:'合計値および NN 寄与の詳細',total:'合計',nnContributions:'最近接塩基対パラメータの寄与',stepCorrection:'ステップ/補正',parameter:'パラメータ',parameterVersion:'現在のパラメータ版：',references:'参考文献',referenceNote:'現在のウェブサイトで使用している 2′-OMe、2′-F、2′-MOE、および LNA パラメータは2026年7月17日版であり、改訂値が確定後に更新されます。'
+    },
+    ko: {
+      eyebrow:'웹 기반 최근접 이웃 예측 도구',title:'2′-변형 RNA 이중가닥 안정성 계산기',intro:'비혼잡 및 세포 유사 조건에서 RNA/RNA, RNA/DNA 및 네 종류의 2′-변형 RNA/RNA 이중가닥에 대한 서열 의존적 Δ<i>H</i>°, Δ<i>S</i>°, Δ<i>G</i>°<sub>37</sub> 값을 예측합니다.',duplexesLabel:'이중가닥:',duplexesText:'RNA/RNA · RNA/DNA · 2′-OMe RNA/RNA · 2′-F RNA/RNA · 2′-MOE RNA/RNA · LNA RNA/RNA',conditionsLabel:'조건:',conditionsText:'비혼잡 · 세포 유사',outputsLabel:'출력:',outputsText:'Δ<i>H</i>° · Δ<i>S</i>° · Δ<i>G</i>°<sub>37</sub> · NN 세부내역 · CSV',language:'언어',howToUse:'사용 방법',step1Title:'서열 입력',step1Text:'가닥 A를 입력하고 가닥 B를 자동 생성합니다.',step2Title:'모드 선택',step2Text:'이중가닥 유형과 용액 조건을 선택합니다.',step3Title:'계산',step3Text:'예측을 실행하고 총값과 NN 세부내역을 확인합니다.',sequenceInput:'서열 입력',sequenceInputBold:'서열 입력.',sequenceInputHelp:'아래에 가닥 A와 가닥 B를 입력하십시오. 가닥 B는 자동 생성할 수 있습니다.',acceptedNotationLabel:'허용 표기:',acceptedNotation:'RNA: A/C/G/U; DNA: dA/dC/dG/dT; 2′-OMe: Ao/Co/Go/Uo; 2′-F: Af/Cf/Gf/Uf; 2′-MOE: Am/Cm/Gm/Um; LNA: Al/Cl/Gl/Ul.',strand1Label:'가닥 A: 5′→3′ 비변형 RNA 가닥',strand2Label:'가닥 B: 3′→5′ 상보 가닥',autoFill:'가닥 B 자동 입력',autoUpdate:'가닥 A 또는 모드 변경 시 가닥 B 업데이트',calculationMode:'이중가닥 유형',condition:'조건',modeRNA:'RNA/RNA',modeDNARNA:'RNA/DNA',modeOMe:'2′-OMe RNA/RNA',modeF:'2′-F RNA/RNA',modeMOE:'2′-MOE RNA/RNA',modeLNA:'LNA RNA/RNA',nonCrowding:'비혼잡',cellLike:'세포 유사 (40 wt% PEG 200)',modeSelectionBold:'모드 선택.',modeSelectionHelp:'이중가닥 유형과 용액 조건을 선택하십시오. 선택한 화학 유형에 따라 가닥 B의 표기가 결정됩니다.',selfNote:'자기상보성 보정은 한 가닥이 자신의 역상보 서열과 완전히 동일한 경우에만 자동 적용됩니다.',calculate:'계산',downloadCsv:'CSV 다운로드',executionBold:'계산 및 출력.',executionHelp:'계산을 클릭하면 Δ<i>H</i>°, Δ<i>S</i>°, Δ<i>G</i>°<sub>37</sub> 및 상세 NN 기여도를 확인할 수 있습니다.',predictedParameters:'예측 열역학 파라미터',outputSubtitle:'총값 및 NN 기여도 상세',total:'총값',nnContributions:'최근접 이웃 기여도',stepCorrection:'단계/보정',parameter:'파라미터',parameterVersion:'현재 파라미터 버전:',references:'참고문헌',referenceNote:'현재 웹사이트에 사용된 2′-OMe, 2′-F, 2′-MOE 및 LNA 파라미터는 2026년 7월 17일 버전이며, 개정 값이 확정되면 업데이트됩니다.'
+    }
+  };
+
+  let currentLanguage = 'en';
+  function t(key){ return (translations[currentLanguage] && translations[currentLanguage][key]) || translations.en[key] || key; }
+  function applyLanguage(lang){
+    currentLanguage = translations[lang] ? lang : 'en';
+    document.documentElement.lang = currentLanguage === 'zh' ? 'zh-CN' : currentLanguage;
+    document.querySelectorAll('[data-i18n]').forEach(el => { const value=t(el.dataset.i18n); if(value != null) el.textContent=value; });
+    document.querySelectorAll('[data-i18n-html]').forEach(el => { const value=t(el.dataset.i18nHtml); if(value != null) el.innerHTML=value; });
+    notationText();
+    if (lastRows.length) calculate();
+  }
+
   function notationText() {
     const mode = $('mode').value;
     const examples = {
-      unmodified: 'Strand 2 notation: A, C, G, U',
-      RNA_DNA: 'Strand 2 notation: dA, dC, dG, dT',
-      OMe: 'Strand 2 notation: Ao, Co, Go, Uo',
-      F: 'Strand 2 notation: Af, Cf, Gf, Uf',
-      MOE: 'Strand 2 notation: Am, Cm, Gm, Um',
-      LNA: 'Strand 2 notation: Al, Cl, Gl, Ul'
+      en:{unmodified:'Strand B notation: A, C, G, U',RNA_DNA:'Strand B notation: dA, dC, dG, dT',OMe:'Strand B notation: Ao, Co, Go, Uo',F:'Strand B notation: Af, Cf, Gf, Uf',MOE:'Strand B notation: Am, Cm, Gm, Um',LNA:'Strand B notation: Al, Cl, Gl, Ul'},
+      zh:{unmodified:'链 B 符号：A、C、G、U',RNA_DNA:'链 B 符号：dA、dC、dG、dT',OMe:'链 B 符号：Ao、Co、Go、Uo',F:'链 B 符号：Af、Cf、Gf、Uf',MOE:'链 B 符号：Am、Cm、Gm、Um',LNA:'链 B 符号：Al、Cl、Gl、Ul'},
+      ja:{unmodified:'鎖 B の表記：A、C、G、U',RNA_DNA:'鎖 B の表記：dA、dC、dG、dT',OMe:'鎖 B の表記：Ao、Co、Go、Uo',F:'鎖 B の表記：Af、Cf、Gf、Uf',MOE:'鎖 B の表記：Am、Cm、Gm、Um',LNA:'鎖 B の表記：Al、Cl、Gl、Ul'},
+      ko:{unmodified:'가닥 B 표기: A, C, G, U',RNA_DNA:'가닥 B 표기: dA, dC, dG, dT',OMe:'가닥 B 표기: Ao, Co, Go, Uo',F:'가닥 B 표기: Af, Cf, Gf, Uf',MOE:'가닥 B 표기: Am, Cm, Gm, Um',LNA:'가닥 B 표기: Al, Cl, Gl, Ul'}
     };
-    $('notation').textContent = examples[mode];
+    $('notation').textContent = examples[currentLanguage][mode];
   }
 
-  function setMessage(message, success) {
-    $('msg').textContent = message;
-    $('msg').className = success ? 'ok' : 'error';
-  }
-
-  function clearMessage() {
-    $('msg').textContent = '';
-    $('msg').className = '';
-  }
-
-  function onModeChange() {
-    notationText();
-    if ($('autofill').checked) generateComplement(false);
-  }
+  function setMessage(message, success) { $('msg').textContent = message; $('msg').className = success ? 'ok' : 'error'; }
+  function clearMessage() { $('msg').textContent = ''; $('msg').className = ''; }
+  function onModeChange() { notationText(); if ($('autofill').checked) generateComplement(false); calculate(); }
 
   function init() {
-    $('auto').addEventListener('click', () => generateComplement(true));
+    $('auto').addEventListener('click', () => { generateComplement(true); calculate(); });
     $('calc').addEventListener('click', calculate);
     $('csv').addEventListener('click', downloadCsv);
     $('mode').addEventListener('change', onModeChange);
-    $('a').addEventListener('input', () => {
-      if ($('autofill').checked) generateComplement(false);
-    });
-    $('autofill').addEventListener('change', () => {
-      if ($('autofill').checked) generateComplement(false);
-    });
-    notationText();
-    if ($('autofill').checked) generateComplement(false);
-    if (!DB) setMessage('The embedded parameter database could not be loaded.', false);
+    $('condition').addEventListener('change', calculate);
+    $('language').addEventListener('change', e => applyLanguage(e.target.value));
+    $('a').addEventListener('input', () => { if ($('autofill').checked) generateComplement(false); });
+    $('autofill').addEventListener('change', () => { if ($('autofill').checked) generateComplement(false); });
+    applyLanguage('en');
+    generateComplement(false);
+    calculate();
   }
 
   document.addEventListener('DOMContentLoaded', init);
